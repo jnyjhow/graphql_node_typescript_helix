@@ -21,6 +21,8 @@
   "homepage": "https://github.com/jnyjhow/graphql_node_typescript_helix#readme",
   "devDependencies": {
     "@prisma/client": "^4.4.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.23",
     "prisma": "^4.4.0",
     "ts-node": "^10.9.1",
@@ -29,9 +31,11 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^9.0.4",
+    "bcryptjs": "^2.4.3",
     "fastify": "^4.6.0",
     "graphql": "^16.6.0",
     "graphql-helix": "^1.13.0",
-    "graphql-import-node": "^0.0.5"
+    "graphql-import-node": "^0.0.5",
+    "jsonwebtoken": "^8.5.1"
   }
 }
