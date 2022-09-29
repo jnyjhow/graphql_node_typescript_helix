@@ -11,7 +11,7 @@ async function main() {
     });
 
     const allLinks = await prisma.link.findMany()
-    
+
     console.log(allLinks)
 }
 
