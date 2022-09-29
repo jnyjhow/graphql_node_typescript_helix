@@ -2,7 +2,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import typeDefs from "./schema.graphql";
 
 import { GraphQLContext } from "./context";
-import { Link, User } from "@prisma/client";
+import { Link, User, Prisma } from "@prisma/client";
 
 import { APP_SECRET } from "./auth";
 import { sign } from "jsonwebtoken";
@@ -36,8 +36,42 @@ const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
     
-    feed: async (parent: unknown, args: {}, context: GraphQLContext) => {
-      return context.prisma.link.findMany();
+    feed: async (
+      parent: unknown,
+      args: {
+        filter?: string;
+        skip?: number;
+        take?: number;
+        orderBy?: {
+          description?: Prisma.SortOrder;
+          url?: Prisma.SortOrder;
+          createdAt?: Prisma.SortOrder;
+        };
+      },
+      context: GraphQLContext
+
+    ) => {
+      const where = args.filter
+        ? {
+            OR: [
+              { description: { contains: args.filter } },
+              { url: { contains: args.filter } },
+            ],
+          }
+        : {};
+
+      const totalCount = await context.prisma.link.count({ where });
+      const links = await context.prisma.link.findMany({
+        where,
+        skip: args.skip,
+        take: args.take,
+        orderBy: args.orderBy,
+      });
+
+      return {
+        count: totalCount,
+        links,
+      };
     },
 
     me: (parent: unknown, args: {}, context: GraphQLContext) => {
